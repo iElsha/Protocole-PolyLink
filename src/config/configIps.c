@@ -12,6 +12,7 @@ char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.11"};
 char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.11"};
 int PORTS_RECEPTION[] = {1920, 1920};
 int PORTS_EMISSION[] = {1920, 1920};
+int IDS_COMPUTER[] = {1, 2};
 
 
 int getConfig(int numberConfig, struct address *addr) {
@@ -25,6 +26,7 @@ int getConfig(int numberConfig, struct address *addr) {
 	addr->ADRESSE_RECEPTEUR = ADRESSES_RECEPTEUR[numberConfig];
 	addr->PORT_EMISSION = PORTS_EMISSION[numberConfig];
 	addr->PORT_RECEPTION = PORTS_RECEPTION[numberConfig];
+	addr->ID_COMPUTER = IDS_COMPUTER[numberConfig];
 
 	return 1;
 }
