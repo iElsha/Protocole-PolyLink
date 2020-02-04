@@ -7,18 +7,17 @@
  * 1999-2001
  */
 
-#include <stdio.h>	// perror
-#include <netdb.h>	// socket, connect, hostent
+#include <stdio.h>    // perror
+#include <netdb.h>    // socket, connect, hostent
 #include <arpa/inet.h>  // sockaddr_in
-#include <stdlib.h>	// exit
-#include <string.h>	// memset
+#include <stdlib.h>    // exit
+#include <string.h>    // memset
 
 #include "../primitives.h"
 
-int creePriseReception (int port)
-{
-    int			sock;
-    struct sockaddr_in	address;
+int creePriseReception(int port) {
+    int sock;
+    struct sockaddr_in address;
 
 /*
  * Cr�ation d'une socket UDP :
@@ -26,10 +25,9 @@ int creePriseReception (int port)
  * SOCK_DGRAM : communication par datagrammes
  * 0 : protocole UDP implicite (car Inet + Dgram)
  */
-    if ((sock = socket (PF_INET, SOCK_DGRAM, 0)) == -1)
-    {
-	perror ("creerPriseReception");
-    	exit (1);
+    if ((sock = socket(PF_INET, SOCK_DGRAM, 0)) == -1) {
+        perror("creerPriseReception");
+        exit(1);
     }
 
 /*
@@ -44,20 +42,19 @@ int creePriseReception (int port)
  *   conversion au format reseau (big endian) du num�ro de port,
  *   htons : host to network short integer)
  */
-    memset (&address, 0, sizeof (address));
+    memset(&address, 0, sizeof(address));
     address.sin_family = AF_INET;
     address.sin_addr.s_addr = INADDR_ANY;
-    address.sin_port = htons (port);
+    address.sin_port = htons(port);
 
 /*
  * Affectation d'une adresse locale � la socket
  */
-    if (bind (sock,
-	      (struct sockaddr*) &address,
-	      sizeof (address)) == -1)
-    {
-	perror ("creerPriseReception");
-	exit (1);
+    if (bind(sock,
+             (struct sockaddr *) &address,
+             sizeof(address)) == -1) {
+        perror("creerPriseReception");
+        exit(1);
     }
 
     return sock;

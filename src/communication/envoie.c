@@ -11,11 +11,10 @@
 
 #include "../primitives.h"
 
-int envoie (int prise, char *buffer, size_t taille)
-{
-    if (write (prise, buffer, taille) == taille)
-	return 0;
-    else
-	return -1;
+int envoie(int prise, char *buffer, size_t taille) {
+	if (write(prise, buffer, taille) == taille)
+		return 0;
+	else
+		return -1;
 }
 

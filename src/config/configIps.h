@@ -11,11 +11,11 @@
  * data struct which handle IP config
  */
 struct address {
-	char *ADRESSE_EMETTEUR;
-	char *ADRESSE_RECEPTEUR;
-	int PORT_RECEPTION;
-	int PORT_EMISSION;
-	int ID_COMPUTER;
+    char *ADRESSE_EMETTEUR;
+    char *ADRESSE_RECEPTEUR;
+    int PORT_RECEPTION;
+    int PORT_EMISSION;
+    int ID_COMPUTER;
 };
 
 /**
