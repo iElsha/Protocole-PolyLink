@@ -17,16 +17,21 @@ int IDS_COMPUTER[] = {1, 2};
 
 int getConfig(int numberConfig, struct address *addr) {
 
-	if (numberConfig > NUMBER_OF_PC - 1) {
-		perror("Cette configuration n'existe pas.");
-		return -1;
-	}
+	if (numberConfig > NUMBER_OF_PC - 1) return -1;
 
+	numberConfig = numberConfig - 1;
 	addr->ADRESSE_EMETTEUR = ADRESSES_EMETTEUR[numberConfig];
 	addr->ADRESSE_RECEPTEUR = ADRESSES_RECEPTEUR[numberConfig];
 	addr->PORT_EMISSION = PORTS_EMISSION[numberConfig];
 	addr->PORT_RECEPTION = PORTS_RECEPTION[numberConfig];
 	addr->ID_COMPUTER = IDS_COMPUTER[numberConfig];
+
+	printf("ID: %d \tIP: %s:%d \tDest: %s:%d\n",
+	       addr->ID_COMPUTER,
+	       addr->ADRESSE_EMETTEUR,
+	       addr->PORT_EMISSION,
+	       addr->ADRESSE_RECEPTEUR,
+	       addr->PORT_RECEPTION);
 
 	return 1;
 }

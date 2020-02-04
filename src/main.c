@@ -1,9 +1,25 @@
 #include <stdio.h>
 #include <string.h>
+#include "config/configIps.h"
+#include <stdlib.h>
 
 int main(int argc, char **argv) {
-
+	char *end;
 	char buffer[200];
+
+	if (argc < 2) {
+		fprintf(stderr, "You didn't provide enough args. Do not forget the configuration IP ID.\n");
+		return -1;
+	}
+
+	int configId = (int) strtol(argv[1], &end, 10); // get the configId ID
+	struct address addr; // create an address struct
+	int configError = getConfig(configId, &addr); // get the configId correspond to the ID
+
+	if (configError == -1) {
+		fprintf(stderr, "This configuration doesn't exist, your config ID is out of range.\n");
+		return -1;
+	}
 
 	while (1) {
 		char action;
@@ -36,7 +52,7 @@ int main(int argc, char **argv) {
 
 	}
 
-	return 0;
+	return 1;
 }
 
 
