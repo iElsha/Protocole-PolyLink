@@ -1,6 +1,3 @@
-//
-// Created by maxence on 04/02/2020.
-//
 #ifndef PROTOCOLE_POLYLINK_UTILS_H
 #define PROTOCOLE_POLYLINK_UTILS_H
 

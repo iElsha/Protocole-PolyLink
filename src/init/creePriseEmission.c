@@ -60,9 +60,7 @@ int creePriseEmission(char *server, int port) {
  * connect pour les sockets UDP permet d'affecter l'adresse destinataire
  * qui sera utilisee lors d'une emission avec send
  */
-	if (connect(sock,
-	            (struct sockaddr *) &address,
-	            sizeof(struct sockaddr_in)) == -1) {
+	if (connect(sock, (struct sockaddr *) &address, sizeof(struct sockaddr_in)) == -1) {
 		perror("creerPriseEmission");
 		exit(1);
 	}

@@ -2,6 +2,9 @@
 #include <string.h>
 #include "config/configIps.h"
 #include <stdlib.h>
+#include "util/polylink_socket.h"
+#include "util/receive.h"
+#include "util/send.h"
 
 int main(int argc, char **argv) {
 	char *end;
@@ -21,10 +24,46 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
+	int receiver, sender;
+	if(addr.ID_COMPUTER == 1){
+		receiver = create_socket_receiver(addr.PORT_RECEPTION);
+		getchar();
+		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+	} else {
+		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+		getchar();
+		receiver = create_socket_receiver(addr.PORT_RECEPTION);
+	}
+
+	int start = 1;
+
 	while (1) {
+
+		if (start != 1 || addr.ID_COMPUTER != 1) {
+			memset(buffer, '\0', sizeof(buffer));
+
+			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
+
+			if (receive_error == -1) {
+				fprintf(stderr, "Error on receive\n");
+				close_socket(receiver);
+				close_socket(sender);
+				return -1;
+			}
+
+			printf("Message >> '%s'\n", buffer);
+		}
+
+		if (start == 1) {
+			printf("Press w to write a message\n");
+			printf("Press n if you have nothing to say\n");
+			printf("Press q to quit\n");
+		}
+		start = 0;
+
 		char action;
 		while (1) {
-			printf("> ");
+			printf("?> ");
 			action = getchar();
 
 			if (action == 'w') { // write a message
@@ -32,8 +71,10 @@ int main(int argc, char **argv) {
 				break;
 			} else if (action == 'n') { // Nothing to say
 				// TODO
-			} else if (action == 'c') {
-				printf("close the client \n");
+			} else if (action == 'q') {
+				printf("Closing the client \n");
+				close_socket(receiver);
+				close_socket(sender);
 				return 1;
 			} else if (action == 'h') {
 				printf("Press w to write a message\n");
@@ -46,9 +87,17 @@ int main(int argc, char **argv) {
 
 		memset(buffer, '\0', sizeof(buffer));
 
-//        sprintf(buffer, "%15s%120s", ADRESSE_RECEPTEUR, "nouveauBlabla");
-//
-//        envoie(priseEmission, buffer, strlen(buffer));
+		printf("m> ");
+		scanf("%s", buffer);
+
+		int send_error = send_data(sender, buffer, sizeof(buffer));
+
+		if (send_error == -1) {
+			fprintf(stderr, "Error on sender\n");
+			close_socket(receiver);
+			close_socket(sender);
+			return -1;
+		}
 
 	}
 
