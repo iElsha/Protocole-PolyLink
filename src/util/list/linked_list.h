@@ -20,7 +20,7 @@ LIST list_create();
 
 void list_destroy(LIST *L);
 
-void fatal_error(const char* errmsg);
+void fatal_error(const char *errmsg);
 
 int list_is_empty(LIST L);
 

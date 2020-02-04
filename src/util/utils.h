@@ -9,6 +9,6 @@
  * get the number of elements in the array
  * @return the length of an array
  */
-int getLength(void*);
+int getLength(void *);
 
 #endif //PROTOCOLE_POLYLINK_UTILS_H
