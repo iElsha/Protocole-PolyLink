@@ -2,6 +2,8 @@
 // Created by maxence on 04/02/2020.
 //
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef PROTOCOLE_POLYLINK_CONFIGIPS_H
 #define PROTOCOLE_POLYLINK_CONFIGIPS_H
 
@@ -24,3 +26,4 @@ int getConfig(int, struct address*);
 
 
 #endif //PROTOCOLE_POLYLINK_CONFIGIPS_H
+#pragma clang diagnostic pop
