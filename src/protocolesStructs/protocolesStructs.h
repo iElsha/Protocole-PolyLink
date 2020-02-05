@@ -20,6 +20,7 @@ struct HeaderMessage {
 	int source;
 	int idBroadcast;
 	int checksum;
+	struct Message* message;
 };
 
 /**
@@ -31,6 +32,7 @@ struct HeaderMessage {
  */
 struct Flag {
 	int flag;
+	struct HeaderMessage* headerMessage;
 };
 
 
@@ -39,9 +41,21 @@ struct Flag {
  */
 struct Container {
 	int nbMessage;
-	LIST dests; // List of the dests
-	LIST sizes; // size of messages
+    struct list* dests; // List of the dests
+    struct list* sizes; // size of messages
+    struct list* flags; //Liste des flags
 };
 
-
+struct Container* parseContainer(char *);
+char* stringifyContainer (struct Container*);
+struct Container* createContainer();
+void addMessage(struct Container*, int, int, char*);
+void addMessageB(struct Container* , int , int , char* , int);
+void createAck(struct Container*, int);
+void createError(struct Container*, int);
+struct Message* createMessage(char *);
+struct HeaderMessage* createHeaderMessage(int source,int checksum, int idBroadcast, struct Message* message);
+struct HeaderMessage* createHeaderMessage_new(int source, int idBroadcast, struct Message* message);
+struct Flag* createFlag1(int);
+struct Flag* createFlag(int, struct HeaderMessage* );
 #endif //PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H

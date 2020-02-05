@@ -18,12 +18,22 @@ struct address {
 	int ID_COMPUTER;
 };
 
+struct CONFIG_PACKET {
+    int SIZE_NBMESSAGE;
+    int SIZE_DEST;
+    int SIZE_SIZE;
+    int SIZE_FLAG;
+    int SIZE_SOURCE;
+    int SIZE_IDBROADCAST;
+    int SIZE_CHECKSUM;
+};
 /**
  * select the user config if possible
  * @return the config of the user depending on what he asked, -1 if there was an error, 1 if it worked.
  */
 int getConfig(int, struct address *);
 
+struct CONFIG_PACKET* getConfigPacket();
 
 #endif //PROTOCOLE_POLYLINK_CONFIGIPS_H
 #pragma clang diagnostic pop

@@ -5,8 +5,11 @@
 #include "util/polylink_socket.h"
 #include "util/receive.h"
 #include "util/send.h"
+#include "protocolesStructs/protocolesStructs.h"
+#include "util/utils.h"
 
 int main(int argc, char **argv) {
+
 	char *end;
 	char buffer[200];
 
@@ -100,7 +103,6 @@ int main(int argc, char **argv) {
 		}
 
 	}
-
 	return 1;
 }
 

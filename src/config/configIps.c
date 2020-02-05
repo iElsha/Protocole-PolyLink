@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "configIps.h"
 #include "../util/utils.h"
 
@@ -10,6 +11,13 @@ int PORTS_RECEPTION[] = {8000, 8001, 8002};
 int PORTS_EMISSION[] = {8001, 8002, 8000};
 int IDS_COMPUTER[] = {1, 2, 3};
 
+const int SIZE_NBMESSAGE = 2;
+const int SIZE_DEST = 2;
+const int SIZE_SIZE = 2;
+const int SIZE_FLAG = 1;
+const int SIZE_SOURCE = 2;
+const int SIZE_IDBROADCAST = 1;
+const int SIZE_CHECKSUM = 3;
 
 int getConfig(int numberConfig, struct address *addr) {
 	numberConfig = numberConfig - 1;
@@ -30,4 +38,16 @@ int getConfig(int numberConfig, struct address *addr) {
 	       addr->PORT_RECEPTION);
 
 	return 1;
+}
+
+struct CONFIG_PACKET* getConfigPacket() {
+    struct CONFIG_PACKET * configPacket = (struct CONFIG_PACKET*) malloc(sizeof(struct CONFIG_PACKET));
+    configPacket->SIZE_CHECKSUM= SIZE_CHECKSUM;
+    configPacket->SIZE_DEST= SIZE_DEST;
+    configPacket->SIZE_FLAG = SIZE_FLAG;
+    configPacket->SIZE_IDBROADCAST = SIZE_IDBROADCAST;
+    configPacket->SIZE_NBMESSAGE = SIZE_NBMESSAGE;
+    configPacket->SIZE_SIZE = SIZE_SIZE;
+    configPacket->SIZE_SOURCE = SIZE_SOURCE;
+    return configPacket;
 }
