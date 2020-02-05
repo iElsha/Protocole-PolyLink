@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include "config/configIps.h"
 #include <stdlib.h>
+
+#include "config/configIps.h"
 #include "util/polylink_socket.h"
 #include "util/receive.h"
 #include "util/send.h"
@@ -28,7 +29,7 @@ int main(int argc, char **argv) {
 	}
 
 	int receiver, sender;
-	if(addr.ID_COMPUTER == 1){
+	if (addr.ID_COMPUTER == 1) {
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
 		getchar();
 		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
@@ -64,34 +65,36 @@ int main(int argc, char **argv) {
 		}
 		start = 0;
 
-		char action;
+		char action[10];
 		while (1) {
 			printf("?> ");
-			action = getchar();
+			memset(action, '\0', sizeof(action));
+			fgets(action, sizeof(action), stdin);
+			strtok(action, "\n");
 
-			if (action == 'w') { // write a message
-
+			printf("action==='%s'\n", action);
+			if (action[0] == 'w') { // write a message
 				break;
-			} else if (action == 'n') { // Nothing to say
+			} else if (action[0] == 'n') { // Nothing to say
 				// TODO
-			} else if (action == 'q') {
+				send_data(sender, "Nothing to say", sizeof("Nothing to say"));
+			} else if (action[0] == 'q') {
 				printf("Closing the client \n");
 				close_socket(receiver);
 				close_socket(sender);
 				return 1;
-			} else if (action == 'h') {
+			} else if (action[0] == 'h') {
 				printf("Press w to write a message\n");
 				printf("Press n if you have nothing to say\n");
 				printf("Press q to quit\n");
 			}
-
-			getchar();
 		}
 
 		memset(buffer, '\0', sizeof(buffer));
 
 		printf("m> ");
-		scanf("%s", buffer);
+		fgets(buffer, sizeof(buffer), stdin);
+		strtok(buffer, "\n");
 
 		int send_error = send_data(sender, buffer, sizeof(buffer));
 
@@ -103,7 +106,6 @@ int main(int argc, char **argv) {
 		}
 
 	}
-	return 1;
 }
 
 

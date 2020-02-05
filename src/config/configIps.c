@@ -5,11 +5,11 @@
 
 const int NUMBER_OF_PC = 3;
 
-char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
-char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
-int PORTS_RECEPTION[] = {8000, 8001, 8002};
-int PORTS_EMISSION[] = {8001, 8002, 8000};
-int IDS_COMPUTER[] = {1, 2, 3};
+const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
+const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
+const int PORTS_RECEPTION[] = {8000, 8001};
+const int PORTS_EMISSION[] = {8001, 8002};
+const int IDS_COMPUTER[] = {1, 2};
 
 const int SIZE_NBMESSAGE = 2;
 const int SIZE_DEST = 2;
