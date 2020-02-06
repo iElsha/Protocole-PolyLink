@@ -4,6 +4,7 @@
 /* Creation d'un container */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
 #include "../config/configIps.h"
@@ -12,6 +13,10 @@
 const int FLAG_MESSAGE = 1;
 const int FLAG_ACK = 2;
 const int FLAG_ERR = 3;
+
+int F_FLAG_MESSAGE(){ return FLAG_MESSAGE;}
+int F_FLAG_ACK(){ return FLAG_ACK;}
+int F_FLAG_ERR(){ return FLAG_MESSAGE;}
 
 struct Container* parseContainer(char * stringPacket){
 
@@ -95,11 +100,18 @@ void addMessageB(struct Container* packet, int source, int dest, char* msg, int 
     struct Message* message = createMessage(msg);
     struct HeaderMessage* headerMessage = createHeaderMessage_new(source,idBroadcast,message);
     struct Flag* flag = createFlag(FLAG_MESSAGE,headerMessage);
-    int size = getLength(msg);
+    int size = strlen(msg);
     packet->nbMessage ++;
     list_insert_footer(dest,packet->dests);
     list_insert_footer(size,packet->sizes);
     list_insert_footer(flag,packet->flags);
+}
+
+void deleteMessage(int pos, struct Container* packet) {
+    free(list_delete(pos,packet->dests));
+    free(list_delete(pos,packet->sizes));
+    deleteFlag(list_delete(pos,packet->flags));
+    packet->nbMessage--;
 }
 
 /* Creation et Ajout d'un acquittement dans le container*/
@@ -124,7 +136,7 @@ void createError(struct Container* packet, int dest) {
 
 struct Message* createMessage(char * msg){
     struct Message* message = (struct Message*) malloc(sizeof(struct Message));
-    message->data = msg;
+    message->data = copy(msg);
     return message;
 }
 
@@ -152,20 +164,22 @@ struct Flag* createFlag(int idFlag, struct HeaderMessage* headerMessage){
     flag->headerMessage = headerMessage;
     return flag;
 }
-/*
+
 void deleteContainer(struct Container* packet){
-    list_destroy(packet->dest)
-    list_destroy(packet->sizes)
-    list_destroy(packet->flags)
+    list_destroy(packet->dests);
+    list_destroy(packet->sizes);
+    list_destroy(packet->flags);
+    free(packet);
 }
 
 void deleteFlag(struct Flag* flag){
-
+    deleteHeaderMessage(flag->headerMessage);
+    free(flag);
 }
 void deleteHeaderMessage(struct HeaderMessage* headermessage){
-
+    deleteMessage_layout(headermessage->message);
+    free(headermessage);
 }
-void deleteMessage(struct Message* message){
-
+void deleteMessage_layout(struct Message* message){
+ free(message);
 }
- */

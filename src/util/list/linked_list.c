@@ -49,20 +49,24 @@ int node_lenght(struct node* n){
     }
 }
 
-bool list_find(void* x, struct list* L){
+int list_find(void* x, struct list* L){
     if (list_is_empty(L)){
-        return false;
+        return -1;
     }
     return node_find(x, L->first);
 }
 
-bool node_find(void *x, struct node* n){
+int node_find(void *x, struct node* n){
     if (n->element == x){
-        return true;
+        return 1;
     } else if (n->next == NULL){
-        return false;
+        return -1;
     } else{
-        return node_find(x,n->next);
+        int nb = node_find(x,n->next);
+        if (nb == -1){
+            return -1;
+        }
+        return nb+1;
     }
 }
 void list_insert(void * x, struct list* L, int p){

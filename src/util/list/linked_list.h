@@ -28,8 +28,8 @@ int list_is_empty(struct list* L);
 int list_lenght(struct list* L);
 int node_lenght(struct node* n);
 
-bool list_find(void* x, struct list* L);
-bool node_find(void *x, struct node* n);
+int list_find(void* x, struct list* L);
+int node_find(void *x, struct node* n);
 
 void list_insert(void * x, struct list* L, int p);
 void node_insert(struct node * x, struct node* n, int p);

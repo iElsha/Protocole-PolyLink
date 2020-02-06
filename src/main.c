@@ -2,17 +2,19 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "protocole/protocole.h"
 #include "config/configIps.h"
 #include "util/polylink_socket.h"
 #include "util/receive.h"
 #include "util/send.h"
 #include "protocolesStructs/protocolesStructs.h"
+
 #include "util/utils.h"
 
 int main(int argc, char **argv) {
 
 	char *end;
-	char buffer[200];
+	char buffer[2000];
 
 	if (argc < 2) {
 		fprintf(stderr, "You didn't provide enough args. Do not forget the configuration IP ID.\n");
@@ -39,12 +41,10 @@ int main(int argc, char **argv) {
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
 	}
 
-	int start = 1;
-
+	int start = 0;
 	while (1) {
 
-		if (start != 1 || addr.ID_COMPUTER != 1) {
-			memset(buffer, '\0', sizeof(buffer));
+		if (addr.ID_COMPUTER != 1 || start != 0) {
 
 			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
 
@@ -54,60 +54,11 @@ int main(int argc, char **argv) {
 				close_socket(sender);
 				return -1;
 			}
-
-			printf("Message >> '%s'\n", buffer);
 		}
+        start = 1;
+        char * data = PolyLink(buffer,addr.ID_COMPUTER);
+        send_data(sender, data, sizeof(data));
 
-		if (start == 1) {
-			printf("Press w to write a message\n");
-			printf("Press n if you have nothing to say\n");
-			printf("Press q to quit\n");
-		}
-		start = 0;
-
-		char action[10];
-		int nothing = 0;
-		while (1) {
-			printf("?> ");
-			memset(action, '\0', sizeof(action));
-			fgets(action, sizeof(action), stdin);
-			strtok(action, "\n");
-
-			if (action[0] == 'w') { // write a message
-				break;
-			} else if (action[0] == 'n') { // Nothing to say
-				nothing = 1;
-				send_data(sender, "Nothing to say", sizeof("Nothing to say"));
-				break;
-			} else if (action[0] == 'q') {
-				printf("Closing the client \n");
-				close_socket(receiver);
-				close_socket(sender);
-				return 1;
-			} else if (action[0] == 'h') {
-				printf("Press w to write a message\n");
-				printf("Press n if you have nothing to say\n");
-				printf("Press q to quit\n");
-			}
-		}
-
-		if(!nothing) {
-
-			memset(buffer, '\0', sizeof(buffer));
-
-			printf("m> ");
-			fgets(buffer, sizeof(buffer), stdin);
-			strtok(buffer, "\n");
-
-			int send_error = send_data(sender, buffer, sizeof(buffer));
-
-			if (send_error == -1) {
-				fprintf(stderr, "Error on sender\n");
-				close_socket(receiver);
-				close_socket(sender);
-				return -1;
-			}
-		}
 	}
 }
 

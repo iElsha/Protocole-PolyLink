@@ -12,4 +12,5 @@ char* IntToString (int);
 char* padLeft(char* , char, int);
 char* substring (char *, int, int);
 char* concat(char*, char*);
+char* copy (char * s);
 #endif //PROTOCOLE_POLYLINK_UTILS_H

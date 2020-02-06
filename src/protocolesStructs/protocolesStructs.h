@@ -45,12 +45,16 @@ struct Container {
     struct list* sizes; // size of messages
     struct list* flags; //Liste des flags
 };
+int F_FLAG_MESSAGE();
+int F_FLAG_ACK();
+int F_FLAG_ERR();
 
 struct Container* parseContainer(char *);
 char* stringifyContainer (struct Container*);
 struct Container* createContainer();
 void addMessage(struct Container*, int, int, char*);
 void addMessageB(struct Container* , int , int , char* , int);
+void deleteMessage(int pos, struct Container* packet);
 void createAck(struct Container*, int);
 void createError(struct Container*, int);
 struct Message* createMessage(char *);
@@ -58,4 +62,8 @@ struct HeaderMessage* createHeaderMessage(int source,int checksum, int idBroadca
 struct HeaderMessage* createHeaderMessage_new(int source, int idBroadcast, struct Message* message);
 struct Flag* createFlag1(int);
 struct Flag* createFlag(int, struct HeaderMessage* );
+void deleteContainer(struct Container* packet);
+void deleteFlag(struct Flag* flag);
+void deleteHeaderMessage(struct HeaderMessage* headermessage);
+void deleteMessage_layout(struct Message* message);
 #endif //PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H

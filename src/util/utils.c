@@ -59,3 +59,11 @@ char* concat(char* s1, char* s2){
     }
     return string;
 }
+char* copy (char * s){
+    int lenght = strlen(s);
+    char* string = (char*)malloc(sizeof(char)*lenght);
+    for (int i = 0; i < lenght; i++){
+        string[i]=s[i];
+    }
+    return string;
+}

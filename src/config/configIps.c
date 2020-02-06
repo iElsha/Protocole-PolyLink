@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include "configIps.h"
 #include "../util/utils.h"
-
-const int NUMBER_OF_PC = 3;
+#include "../util/list/linked_list.h"
+const int NUMBER_OF_PC = 2;
 
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
-const int PORTS_RECEPTION[] = {8000, 8001};
-const int PORTS_EMISSION[] = {8001, 8000};
+const int PORTS_RECEPTION[] = {8001, 8000};
+const int PORTS_EMISSION[] = {8000, 8001};
 const int IDS_COMPUTER[] = {1, 2};
-
+const int BROADCAST = 99;
 const int SIZE_NBMESSAGE = 2;
 const int SIZE_DEST = 2;
 const int SIZE_SIZE = 2;
@@ -50,4 +50,12 @@ struct CONFIG_PACKET* getConfigPacket() {
 	configPacket->SIZE_SIZE = SIZE_SIZE;
 	configPacket->SIZE_SOURCE = SIZE_SOURCE;
 	return configPacket;
+}
+
+struct list* getIDS_COMPUTER(){
+    struct list* l = list_create();
+    for (int i = 0; i < NUMBER_OF_PC; i++){
+        list_insert_footer(IDS_COMPUTER[i],l);
+    }
+    return l;
 }

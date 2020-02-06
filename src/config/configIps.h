@@ -34,6 +34,7 @@ struct CONFIG_PACKET {
 int getConfig(int, struct address *);
 
 struct CONFIG_PACKET* getConfigPacket();
+struct list* getIDS_COMPUTER();
 
 #endif //PROTOCOLE_POLYLINK_CONFIGIPS_H
 #pragma clang diagnostic pop
