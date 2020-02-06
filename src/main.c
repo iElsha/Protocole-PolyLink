@@ -31,11 +31,11 @@ int main(int argc, char **argv) {
 	int receiver, sender;
 	if (addr.ID_COMPUTER == 1) {
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
-		getchar();
+//		getchar();
 		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
 	} else {
 		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
-		getchar();
+//		getchar();
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
 	}
 
@@ -66,18 +66,19 @@ int main(int argc, char **argv) {
 		start = 0;
 
 		char action[10];
+		int nothing = 0;
 		while (1) {
 			printf("?> ");
 			memset(action, '\0', sizeof(action));
 			fgets(action, sizeof(action), stdin);
 			strtok(action, "\n");
 
-			printf("action==='%s'\n", action);
 			if (action[0] == 'w') { // write a message
 				break;
 			} else if (action[0] == 'n') { // Nothing to say
-				// TODO
+				nothing = 1;
 				send_data(sender, "Nothing to say", sizeof("Nothing to say"));
+				break;
 			} else if (action[0] == 'q') {
 				printf("Closing the client \n");
 				close_socket(receiver);
@@ -90,21 +91,23 @@ int main(int argc, char **argv) {
 			}
 		}
 
-		memset(buffer, '\0', sizeof(buffer));
+		if(!nothing) {
 
-		printf("m> ");
-		fgets(buffer, sizeof(buffer), stdin);
-		strtok(buffer, "\n");
+			memset(buffer, '\0', sizeof(buffer));
 
-		int send_error = send_data(sender, buffer, sizeof(buffer));
+			printf("m> ");
+			fgets(buffer, sizeof(buffer), stdin);
+			strtok(buffer, "\n");
 
-		if (send_error == -1) {
-			fprintf(stderr, "Error on sender\n");
-			close_socket(receiver);
-			close_socket(sender);
-			return -1;
+			int send_error = send_data(sender, buffer, sizeof(buffer));
+
+			if (send_error == -1) {
+				fprintf(stderr, "Error on sender\n");
+				close_socket(receiver);
+				close_socket(sender);
+				return -1;
+			}
 		}
-
 	}
 }
 

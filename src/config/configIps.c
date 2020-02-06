@@ -8,7 +8,7 @@ const int NUMBER_OF_PC = 3;
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const int PORTS_RECEPTION[] = {8000, 8001};
-const int PORTS_EMISSION[] = {8001, 8002};
+const int PORTS_EMISSION[] = {8001, 8000};
 const int IDS_COMPUTER[] = {1, 2};
 
 const int SIZE_NBMESSAGE = 2;
@@ -41,13 +41,13 @@ int getConfig(int numberConfig, struct address *addr) {
 }
 
 struct CONFIG_PACKET* getConfigPacket() {
-    struct CONFIG_PACKET * configPacket = (struct CONFIG_PACKET*) malloc(sizeof(struct CONFIG_PACKET));
-    configPacket->SIZE_CHECKSUM= SIZE_CHECKSUM;
-    configPacket->SIZE_DEST= SIZE_DEST;
-    configPacket->SIZE_FLAG = SIZE_FLAG;
-    configPacket->SIZE_IDBROADCAST = SIZE_IDBROADCAST;
-    configPacket->SIZE_NBMESSAGE = SIZE_NBMESSAGE;
-    configPacket->SIZE_SIZE = SIZE_SIZE;
-    configPacket->SIZE_SOURCE = SIZE_SOURCE;
-    return configPacket;
+	struct CONFIG_PACKET * configPacket = (struct CONFIG_PACKET*) malloc(sizeof(struct CONFIG_PACKET));
+	configPacket->SIZE_CHECKSUM= SIZE_CHECKSUM;
+	configPacket->SIZE_DEST= SIZE_DEST;
+	configPacket->SIZE_FLAG = SIZE_FLAG;
+	configPacket->SIZE_IDBROADCAST = SIZE_IDBROADCAST;
+	configPacket->SIZE_NBMESSAGE = SIZE_NBMESSAGE;
+	configPacket->SIZE_SIZE = SIZE_SIZE;
+	configPacket->SIZE_SOURCE = SIZE_SOURCE;
+	return configPacket;
 }
