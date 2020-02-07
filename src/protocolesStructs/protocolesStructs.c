@@ -42,10 +42,10 @@ struct Container* parseContainer(char * stringPacket){
         } else {
             int source = StringToInt(substring(stringPacket,headread,headread+config->SIZE_SOURCE));
             headread += config->SIZE_SOURCE;
-            int checksum = StringToInt(substring(stringPacket,headread,headread+config->SIZE_SOURCE));
-            headread += config->SIZE_SOURCE;
-            int idbroadcast = StringToInt(substring(stringPacket,headread,headread+config->SIZE_SOURCE));
-            headread += config->SIZE_SOURCE;
+            int checksum = StringToInt(substring(stringPacket,headread,headread+config->SIZE_CHECKSUM));
+            headread += config->SIZE_CHECKSUM;
+            int idbroadcast = StringToInt(substring(stringPacket,headread,headread+config->SIZE_IDBROADCAST));
+            headread += config->SIZE_IDBROADCAST;
             char* msg = substring(stringPacket,headread,headread+list_getElem(i,packet->sizes));
             headread += list_getElem(i,packet->sizes);
             struct Message * message = createMessage(msg);
@@ -70,10 +70,12 @@ char* stringifyContainer (struct Container* packet) {
     }
     for (int i = 0; i < packet->nbMessage; i++){
         struct Flag* flag = list_getElem(i,packet->flags);
-        stringpacket = concat(stringpacket,padLeft(IntToString(flag->flag),'0',config->SIZE_SIZE));
+        stringpacket = concat(stringpacket,padLeft(IntToString(flag->flag),'0',config->SIZE_FLAG));
         if(flag->flag != FLAG_ACK && flag->flag != FLAG_ERR){
-            stringpacket = concat(stringpacket,padLeft(IntToString(flag->headerMessage->source),'0',config->SIZE_SOURCE));
-            stringpacket = concat(stringpacket,padLeft(IntToString(flag->headerMessage->checksum),'0',config->SIZE_CHECKSUM));
+            char * t1 = padLeft(IntToString(flag->headerMessage->source),'0',config->SIZE_SOURCE);
+            stringpacket = concat(stringpacket,t1);
+            char * t2 = padLeft(IntToString(flag->headerMessage->checksum),'0',config->SIZE_CHECKSUM);
+            stringpacket = concat(stringpacket,t2);
             stringpacket = concat(stringpacket,padLeft(IntToString(flag->headerMessage->idBroadcast),'0',config->SIZE_IDBROADCAST));
             stringpacket = concat(stringpacket,flag->headerMessage->message->data);
         }
@@ -108,9 +110,9 @@ void addMessageB(struct Container* packet, int source, int dest, char* msg, int 
 }
 
 void deleteMessage(int pos, struct Container* packet) {
-    free(list_delete(pos,packet->dests));
-    free(list_delete(pos,packet->sizes));
-    deleteFlag(list_delete(pos,packet->flags));
+    list_delete(pos,packet->dests);
+    list_delete(pos,packet->sizes);
+    list_delete(pos,packet->flags);
     packet->nbMessage--;
 }
 

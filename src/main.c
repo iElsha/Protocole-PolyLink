@@ -47,7 +47,6 @@ int main(int argc, char **argv) {
 		if (addr.ID_COMPUTER != 1 || start != 0) {
 
 			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
-
 			if (receive_error == -1) {
 				fprintf(stderr, "Error on receive\n");
 				close_socket(receiver);
@@ -57,8 +56,7 @@ int main(int argc, char **argv) {
 		}
         start = 1;
         char * data = PolyLink(buffer,addr.ID_COMPUTER);
-        send_data(sender, data, sizeof(data));
-
+        send_data(sender, data, strlen(data));
 	}
 }
 

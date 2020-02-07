@@ -58,7 +58,7 @@ int list_find(void* x, struct list* L){
 
 int node_find(void *x, struct node* n){
     if (n->element == x){
-        return 1;
+        return 0;
     } else if (n->next == NULL){
         return -1;
     } else{

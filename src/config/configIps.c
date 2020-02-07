@@ -3,14 +3,14 @@
 #include "configIps.h"
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
-const int NUMBER_OF_PC = 2;
+const int NUMBER_OF_PC = 3;
 
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
-const int PORTS_RECEPTION[] = {8001, 8000};
-const int PORTS_EMISSION[] = {8000, 8001};
-const int IDS_COMPUTER[] = {1, 2};
-const int BROADCAST = 99;
+const int PORTS_RECEPTION[] = {8000, 8001,8002};
+const int PORTS_EMISSION[] = {8002, 8000,8001};
+const int IDS_COMPUTER[] = {1, 2, 3};
+int BROADCAST = 99;
 const int SIZE_NBMESSAGE = 2;
 const int SIZE_DEST = 2;
 const int SIZE_SIZE = 2;
@@ -58,4 +58,8 @@ struct list* getIDS_COMPUTER(){
         list_insert_footer(IDS_COMPUTER[i],l);
     }
     return l;
+}
+
+int getBROADCAST(){
+    return BROADCAST;
 }
