@@ -15,10 +15,10 @@ char *IntToString(int);
 
 char *padLeft(char *, char, int);
 
-char *substring(char *, int, int);
+char *substring(const char *, int, int);
 
 char *concat(char *, char *);
 
-char *copy(char *s);
+char *copy(char *string);
 
 #endif //PROTOCOLE_POLYLINK_UTILS_H

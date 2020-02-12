@@ -4,12 +4,12 @@
 #include <stdbool.h>
 
 struct node {
-    void *element;
-    struct node *next;
+	void *element;
+	struct node *next;
 };
 
 struct list {
-    struct node *first;
+	struct node *first;
 };
 
 

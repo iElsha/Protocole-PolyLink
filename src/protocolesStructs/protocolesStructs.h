@@ -7,17 +7,17 @@
  * structure layer 5
  */
 struct Message {
-    char *data;
+	char *data;
 };
 
 /**
  * structure layer 4
  */
 struct HeaderMessage {
-    int source;
-    int idBroadcast;
-    int checksum;
-    struct Message *message;
+	int source;
+	int idBroadcast;
+	int checksum;
+	struct Message *message;
 };
 
 /**
@@ -28,8 +28,8 @@ struct HeaderMessage {
  * 			3 : Error
  */
 struct Flag {
-    int flag;
-    struct HeaderMessage *headerMessage;
+	int flag;
+	struct HeaderMessage *headerMessage;
 };
 
 
@@ -37,10 +37,10 @@ struct Flag {
  * structure layer 2
  */
 struct Container {
-    int nbMessage;
-    struct list *dests; // List of the dests
-    struct list *sizes; // size of messages
-    struct list *flags; //Liste des flags
+	int nbMessage;
+	struct list *dests; // List of the dests
+	struct list *sizes; // size of messages
+	struct list *flags; //Liste des flags
 };
 
 int F_FLAG_MESSAGE();
