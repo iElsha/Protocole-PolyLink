@@ -1,9 +1,9 @@
 #ifndef PROTOCOLE_POLYLINK_POLYLINK_SOCKET_H
 #define PROTOCOLE_POLYLINK_POLYLINK_SOCKET_H
 
-int create_socket_receiver(int);
+int createSocketReceiver(int);
 
-int create_socket_sender(char *, int);
+int createSocketSender(char *, int);
 
 int close_sockets();
 

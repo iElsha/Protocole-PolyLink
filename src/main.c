@@ -8,6 +8,7 @@
 #include "util/receive.h"
 #include "util/send.h"
 #include "protocolesStructs/protocolesStructs.h"
+#include "util/colors.h"
 
 int main(int argc, char **argv) {
 
@@ -30,11 +31,11 @@ int main(int argc, char **argv) {
 
 	int receiver, sender;
 	if (addr.ID_COMPUTER != NUMBER_OF_PC) {
-		receiver = create_socket_receiver(addr.PORT_RECEPTION);
-		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+		receiver = createSocketReceiver(addr.PORT_RECEPTION);
+		sender = createSocketSender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
 	} else {
-		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
-		receiver = create_socket_receiver(addr.PORT_RECEPTION);
+		sender = createSocketSender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+		receiver = createSocketReceiver(addr.PORT_RECEPTION);
 	}
 
 	int start = 0;
