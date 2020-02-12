@@ -3,7 +3,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdlib.h>
 
+int receiver, sender;
 
 int create_socket_receiver(int TDP_port_S) {
 	int sock, new_sock;
@@ -28,7 +30,7 @@ int create_socket_receiver(int TDP_port_S) {
 	perror("accept ");
 
 	close(sock);
-
+    receiver = new_sock;
 
 	return new_sock;
 }
@@ -49,11 +51,13 @@ int create_socket_sender(char *IP_addr_S, int TDP_port_S) {
 
 	connect(sock, (struct sockaddr *) &sa_S, taille_sa_S);
 	perror("Connect ");
+    sender = sock;
 
 	return sock;
 }
 
-int close_socket(int socket) {
-	close(socket);
-	return 1;
+int close_sockets() {
+    close(receiver);
+    close(sender);
+	exit(EXIT_SUCCESS);
 }

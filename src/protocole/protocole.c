@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../util/polylink_socket.h"
 
 struct Flag *lastMessage;
 static int lastDesMessage;
@@ -104,10 +105,10 @@ void packet_message_read_broadcast(struct Container *packet) {
 				i--;
 			} else {
 				// test si deja broadcast
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wint-conversion"
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Wint-conversion"
 				int sourcepos = list_find(f->headerMessage->source, listUser);
-#pragma clang diagnostic pop
+                #pragma clang diagnostic pop
 				int *lastid = list_getElem(sourcepos, listIdBroadcast);
 				if (*lastid != f->headerMessage->idBroadcast) {
 					*lastid = f->headerMessage->idBroadcast;
@@ -155,9 +156,9 @@ void action_user(int error, struct Container *packet) {
 	if (error) {
 		printf("\nYour last message failed:\n\n");
 		printf("%d --> %s\n", ID_USER, lastMessage->headerMessage->message->data);
-		printf("Do you want to send it back? [y/n] : ");
+		printf("Do you want to send it back? [y/N/q] : ");
 	} else {
-		printf("\nDo you want to send a message? [y/n] : ");
+		printf("\nDo you want to send a message? [y/N/q] : ");
 	}
 	do {
 		memset(action, '\0', sizeof(action));
@@ -191,10 +192,10 @@ void action_user(int error, struct Container *packet) {
 				int dest = StringToInt(iddest);
 
 				if (BROADCAST == dest) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wint-conversion"
+                    #pragma clang diagnostic push
+                    #pragma clang diagnostic ignored "-Wint-conversion"
 					int *idBroadcast = list_getElem(list_find(ID_USER, listUser), listIdBroadcast);
-#pragma clang diagnostic pop
+                    #pragma clang diagnostic pop
 					(*idBroadcast)++;
 					addMessageB(packet, ID_USER, BROADCAST, msg, *idBroadcast);
 				} else {
@@ -207,8 +208,12 @@ void action_user(int error, struct Container *packet) {
 			printf("\nMessage sent !!!\n");
 		} else if (action[0] == 'h') {
 			printf("Press y to write a message or resend the last message\n");
-			printf("Press n if you have nothing to say\n");
+            printf("Press n if you have nothing to say\n");
+            printf("Press q if you want to quit\n");
+		} else if (action[0] == 'q'){
+		    printf("Closing Sockets ..\n");
+		    close_sockets();
 		}
-	} while (action[0] != 'y' && action[0] != 'n');
+	} while (action[0] != 'y' && action[0] != 'n' && action[0] != '\n');
 
 }
