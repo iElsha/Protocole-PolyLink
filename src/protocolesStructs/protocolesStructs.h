@@ -1,5 +1,8 @@
 #include "../util/list/linked_list.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
 #define PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
 
@@ -7,17 +10,17 @@
  * structure layer 5
  */
 struct Message {
-    char *data;
+	char *data;
 };
 
 /**
  * structure layer 4
  */
 struct HeaderMessage {
-    int source;
-    int idBroadcast;
-    int checksum;
-    struct Message *message;
+	int source;
+	int idBroadcast;
+	int checksum;
+	struct Message *message;
 };
 
 /**
@@ -28,8 +31,8 @@ struct HeaderMessage {
  * 			3 : Error
  */
 struct Flag {
-    int flag;
-    struct HeaderMessage *headerMessage;
+	int flag;
+	struct HeaderMessage *headerMessage;
 };
 
 
@@ -37,10 +40,10 @@ struct Flag {
  * structure layer 2
  */
 struct Container {
-    int nbMessage;
-    struct list *dests; // List of the dests
-    struct list *sizes; // size of messages
-    struct list *flags; //Liste des flags
+	int nbMessage;
+	struct list *dests; // List of the dests
+	struct list *sizes; // size of messages
+	struct list *flags; //Liste des flags
 };
 
 int F_FLAG_MESSAGE();
@@ -79,8 +82,10 @@ void deleteContainer(struct Container *packet);
 
 void deleteFlag(struct Flag *flag);
 
-void deleteHeaderMessage(struct HeaderMessage *headermessage);
+void deleteHeaderMessage(struct HeaderMessage *headerMessage);
 
 void deleteMessage_layout(struct Message *message);
 
 #endif //PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
+
+#pragma clang diagnostic pop
