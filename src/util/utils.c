@@ -24,10 +24,10 @@ int StringToInt(char *data) {
 	// call to strtol assigning return to number and it automatically set errno
 	number = strtol(data, &endptr, base);
 
-	/* output original string of characters considered */
-	printf("\n string : %s\n base   : %d\n endptr : %s\n\n", data, base, endptr);
+	// output original string of characters considered
+	//printf("\n string : %s\n base   : %d\n endptr : %s\n\n", data, base, endptr);
 
-	/* test return to number and errno values */
+	// test return to number and errno values
 	if (data == endptr)
 		fprintf(stderr, " number : %lu  invalid  (no digits found, 0 returned)\n", number);
 	else if (errno == ERANGE && number == LONG_MIN)
