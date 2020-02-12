@@ -1,5 +1,8 @@
 #include "../util/list/linked_list.h"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-pragmas"
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
 #define PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
 
@@ -79,8 +82,10 @@ void deleteContainer(struct Container *packet);
 
 void deleteFlag(struct Flag *flag);
 
-void deleteHeaderMessage(struct HeaderMessage *headermessage);
+void deleteHeaderMessage(struct HeaderMessage *headerMessage);
 
 void deleteMessage_layout(struct Message *message);
 
 #endif //PROTOCOLE_POLYLINK_PROTOCOLESSTRUCTS_H
+
+#pragma clang diagnostic pop

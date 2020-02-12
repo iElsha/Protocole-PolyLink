@@ -2,35 +2,33 @@
 #include "../protocolesStructs/protocolesStructs.h"
 #include "../config/configIps.h"
 #include "../util/utils.h"
-#include "../util/list/linked_list.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 struct Flag *lastMessage;
-int lastDesMessage;
-
+static int lastDesMessage;
 
 struct CONFIG_PACKET *configPacket;
 
-int IDUSER;
-int BROADCAST;
+static int ID_USER;
+static int BROADCAST;
 
-struct list *list_user;
-struct list *list_idbroadcast;
+struct list *listUser;
+struct list *listIdBroadcast;
 
 
 char *PolyLink(char *stringPacket, int pc) {
 
 	/*   INTI  */
-	IDUSER = pc;
+	ID_USER = pc;
 	BROADCAST = getBROADCAST();
-	list_user = getIDS_COMPUTER();
-	list_idbroadcast = list_create();
-	for (int i = 0; i < list_lenght(list_user); i++) {
+	listUser = getIDS_COMPUTER();
+	listIdBroadcast = list_create();
+	for (int i = 0; i < list_lenght(listUser); i++) {
 		int *j = (int *) malloc(sizeof(int));
 		*j = 0;
-		list_insert_header(j, list_idbroadcast);
+		list_insert_header(j, listIdBroadcast);
 	}
 
 	configPacket = getConfigPacket();
@@ -60,9 +58,9 @@ void packet_message_ack(struct Container *packet) {
 	int find = 0;
 	int i = 0;
 	while (!find && lastMessage != NULL && i < packet->nbMessage) {
-		if (list_getElem(i, packet->dests) == IDUSER || list_getElem(i, packet->dests) == BROADCAST) {
+		if ((int) list_getElem(i, packet->dests) == ID_USER || (int) list_getElem(i, packet->dests) == BROADCAST) {
 			struct Flag *f = list_getElem(i, packet->flags);
-			if (f->flag == F_FLAG_ACK() || (f->flag == F_FLAG_MESSAGE() && f->headerMessage->source == IDUSER)) {
+			if (f->flag == F_FLAG_ACK() || (f->flag == F_FLAG_MESSAGE() && f->headerMessage->source == ID_USER)) {
 				printf("\nYour message has been transmitted\n");
 				deleteMessage(i, packet);
 				find = 1;
@@ -76,7 +74,7 @@ int packet_message_error(struct Container *packet) {
 	int find = 0;
 	int i = 0;
 	while (!find && lastMessage != NULL && i < packet->nbMessage) {
-		if (list_getElem(i, packet->dests) == IDUSER) {
+		if ((int) list_getElem(i, packet->dests) == ID_USER) {
 			struct Flag *f = list_getElem(i, packet->flags);
 			if (f->flag == F_FLAG_ERR()) {
 				printf("\nYour message hasn't been transmitted\n");
@@ -95,7 +93,7 @@ void packet_message_read_broadcast(struct Container *packet) {
 
 	// recherche est message de braodcast
 	while (i < packet->nbMessage) {
-		if (list_getElem(i, packet->dests) == BROADCAST) {
+		if ((int) list_getElem(i, packet->dests) == BROADCAST) {
 			struct Flag *f = list_getElem(i, packet->flags);
 			// check si il y a une error
 			if (calcCheckSum(f->headerMessage->message->data, configPacket->SIZE_CHECKSUM) !=
@@ -106,8 +104,11 @@ void packet_message_read_broadcast(struct Container *packet) {
 				i--;
 			} else {
 				// test si deja broadcast
-				int sourcepos = list_find(f->headerMessage->source, list_user);
-				int *lastid = list_getElem(sourcepos, list_idbroadcast);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wint-conversion"
+				int sourcepos = list_find(f->headerMessage->source, listUser);
+#pragma clang diagnostic pop
+				int *lastid = list_getElem(sourcepos, listIdBroadcast);
 				if (*lastid != f->headerMessage->idBroadcast) {
 					*lastid = f->headerMessage->idBroadcast;
 					if (!find) {
@@ -126,7 +127,7 @@ void packet_message_read_user(struct Container *packet) {
 	int find = 0;
 	int i = 0;
 	while (i < packet->nbMessage) {
-		if (list_getElem(i, packet->dests) == IDUSER) {
+		if ((int) list_getElem(i, packet->dests) == ID_USER) {
 			struct Flag *f = list_getElem(i, packet->flags);
 			if (calcCheckSum(f->headerMessage->message->data, configPacket->SIZE_CHECKSUM) !=
 			    f->headerMessage->checksum) {
@@ -153,7 +154,7 @@ void action_user(int error, struct Container *packet) {
 	printf("\n--- User Console ---\n");
 	if (error) {
 		printf("\nYour last message failed:\n\n");
-		printf("%d --> %s\n", IDUSER, lastMessage->headerMessage->message->data);
+		printf("%d --> %s\n", ID_USER, lastMessage->headerMessage->message->data);
 		printf("Do you want to send it back? [y/n] : ");
 	} else {
 		printf("\nDo you want to send a message? [y/n] : ");
@@ -165,13 +166,13 @@ void action_user(int error, struct Container *packet) {
 
 		if (action[0] == 'y') { // write a message
 			if (error) {
-				addMessageB(packet, IDUSER, lastDesMessage, lastMessage->headerMessage->message->data,
+				addMessageB(packet, ID_USER, lastDesMessage, lastMessage->headerMessage->message->data,
 				            lastMessage->headerMessage->idBroadcast);
 			} else {
 				printf("\nList of user:\n|");
-				for (int i = 0; i < list_lenght(list_user); i++) {
-					int j = list_getElem(i, list_user);
-					if (j != IDUSER)
+				for (int i = 0; i < list_lenght(listUser); i++) {
+					int j = (int) list_getElem(i, listUser);
+					if (j != ID_USER)
 						printf(" %d |", j);
 				}
 				printf("\nBroadcast : %d\nSelect a destination: ", BROADCAST);
@@ -180,7 +181,7 @@ void action_user(int error, struct Container *packet) {
 				fgets(iddest, sizeof(iddest), stdin);
 				strtok(iddest, "\n");
 
-				printf("Message :\n%d --> ", IDUSER);
+				printf("Message :\n%d --> ", ID_USER);
 
 				char msg[200];
 				memset(msg, '\0', sizeof(msg));
@@ -190,14 +191,17 @@ void action_user(int error, struct Container *packet) {
 				int dest = StringToInt(iddest);
 
 				if (BROADCAST == dest) {
-					int *idbraod = list_getElem(list_find(IDUSER, list_user), list_idbroadcast);
-					(*idbraod)++;
-					addMessageB(packet, IDUSER, BROADCAST, msg, *idbraod);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wint-conversion"
+					int *idBroadcast = list_getElem(list_find(ID_USER, listUser), listIdBroadcast);
+#pragma clang diagnostic pop
+					(*idBroadcast)++;
+					addMessageB(packet, ID_USER, BROADCAST, msg, *idBroadcast);
 				} else {
-					addMessage(packet, IDUSER, dest, msg);
+					addMessage(packet, ID_USER, dest, msg);
 				}
 				lastMessage = list_getElem_footer(packet->flags);
-				lastDesMessage = list_getElem_footer(packet->dests);
+				lastDesMessage = (int) list_getElem_footer(packet->dests);
 
 			}
 			printf("\nMessage sent !!!\n");

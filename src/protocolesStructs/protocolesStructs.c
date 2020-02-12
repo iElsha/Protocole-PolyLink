@@ -181,9 +181,9 @@ void deleteFlag(struct Flag *flag) {
 	free(flag);
 }
 
-void deleteHeaderMessage(struct HeaderMessage *headermessage) {
-	deleteMessage_layout(headermessage->message);
-	free(headermessage);
+void deleteHeaderMessage(struct HeaderMessage *headerMessage) {
+	deleteMessage_layout(headerMessage->message);
+	free(headerMessage);
 }
 
 void deleteMessage_layout(struct Message *message) {
