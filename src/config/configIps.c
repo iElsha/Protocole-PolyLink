@@ -10,13 +10,19 @@ const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const int PORTS_RECEPTION[] = {8000, 8001,8002};
 const int PORTS_EMISSION[] = {8002, 8000,8001};
 const int IDS_COMPUTER[] = {1, 2, 3};
-int BROADCAST = 99;
+
+/* Size in number of characters */
+// Size of number of message: 10*n-1
 const int SIZE_NBMESSAGE = 2;
-const int SIZE_DEST = 2;
+// Address size: 10*n-3
+const int SIZE_ADDRESS = 2;
+// Message length size: 10*n-1
 const int SIZE_SIZE = 2;
+// Size of number of flag: 10*n-1
 const int SIZE_FLAG = 1;
-const int SIZE_SOURCE = 2;
+// Size of number of id braodcast : 10*n-1
 const int SIZE_IDBROADCAST = 1;
+// Size of number of checksum : 10*n-1
 const int SIZE_CHECKSUM = 3;
 
 int getConfig(int numberConfig, struct address *addr) {
@@ -43,12 +49,12 @@ int getConfig(int numberConfig, struct address *addr) {
 struct CONFIG_PACKET* getConfigPacket() {
 	struct CONFIG_PACKET * configPacket = (struct CONFIG_PACKET*) malloc(sizeof(struct CONFIG_PACKET));
 	configPacket->SIZE_CHECKSUM= SIZE_CHECKSUM;
-	configPacket->SIZE_DEST= SIZE_DEST;
+	configPacket->SIZE_DEST= SIZE_ADDRESS;
 	configPacket->SIZE_FLAG = SIZE_FLAG;
 	configPacket->SIZE_IDBROADCAST = SIZE_IDBROADCAST;
 	configPacket->SIZE_NBMESSAGE = SIZE_NBMESSAGE;
 	configPacket->SIZE_SIZE = SIZE_SIZE;
-	configPacket->SIZE_SOURCE = SIZE_SOURCE;
+	configPacket->SIZE_SOURCE = SIZE_ADDRESS;
 	return configPacket;
 }
 
@@ -61,5 +67,5 @@ struct list* getIDS_COMPUTER(){
 }
 
 int getBROADCAST(){
-    return BROADCAST;
+    return SIZE_ADDRESS*10-1;
 }

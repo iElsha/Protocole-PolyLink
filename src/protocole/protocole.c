@@ -22,7 +22,7 @@ struct list *list_idbroadcast;
 
 char *PolyLink(char *stringPacket, int pc) {
 
-    /*   INTI  */
+    /*   Initialisation  */
     IDUSER = pc;
     BROADCAST = getBROADCAST();
     list_user = getIDS_COMPUTER();
@@ -32,7 +32,6 @@ char *PolyLink(char *stringPacket, int pc) {
         *j = 0;
         list_insert_header(j, list_idbroadcast);
     }
-
     configPacket = getConfigPacket();
     struct Container *packet;
     if (stringPacket == NULL || strlen(stringPacket) <= 1) {
@@ -40,21 +39,19 @@ char *PolyLink(char *stringPacket, int pc) {
     } else {
         packet = parseContainer(stringPacket);
     }
-    /*****/
 
-
+    /*** ***/
     printf("\n========= Packet =========\n");
     packet_message_ack(packet);
     int error = packet_message_error(packet);
     packet_message_read_broadcast(packet);
     packet_message_read_user(packet);
-
     action_user(error, packet);
-
     printf("\n=========================\n");
+
     return stringifyContainer(packet);
 }
-
+/*  */
 void packet_message_ack(struct Container *packet) {
 
     int find = 0;
