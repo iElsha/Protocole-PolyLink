@@ -29,13 +29,11 @@ int main(int argc, char **argv) {
 	}
 
 	int receiver, sender;
-	if (addr.ID_COMPUTER == 1) {
+	if (addr.ID_COMPUTER != NUMBER_OF_PC) {
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
-		getchar();
 		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
 	} else {
 		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
-//		getchar();
 		receiver = create_socket_receiver(addr.PORT_RECEPTION);
 	}
 

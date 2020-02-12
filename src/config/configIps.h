@@ -2,6 +2,7 @@
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #ifndef PROTOCOLE_POLYLINK_CONFIGIPS_H
 #define PROTOCOLE_POLYLINK_CONFIGIPS_H
+const int NUMBER_OF_PC;
 
 /**
  * data struct which handle IP config
