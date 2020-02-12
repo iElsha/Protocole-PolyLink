@@ -6,11 +6,19 @@
  * @return the length of an array
  */
 int getLength(void *);
-int calcCheckSum(char*, int);
-int StringToInt (char*);
-char* IntToString (int);
-char* padLeft(char* , char, int);
-char* substring (char *, int, int);
-char* concat(char*, char*);
-char* copy (char * s);
+
+int calcCheckSum(char *, int);
+
+int StringToInt(char *);
+
+char *IntToString(int);
+
+char *padLeft(char *, char, int);
+
+char *substring(char *, int, int);
+
+char *concat(char *, char *);
+
+char *copy(char *s);
+
 #endif //PROTOCOLE_POLYLINK_UTILS_H
