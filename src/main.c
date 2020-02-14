@@ -16,8 +16,8 @@ int main(int argc, char **argv) {
 	char buffer[2000];
 
 	if (argc < 2) {
-		fprintf(stderr, "You didn't provide enough args. Do not forget the configuration IP ID.\n");
-		return -1;
+		fprintf(stderr, "You didn't provide enough args. Do not forget to add the configuration IP ID.\n");
+		exit(EXIT_FAILURE);
 	}
 
 	int configId = (int) strtol(argv[1], &end, 10); // get the configId ID
@@ -25,8 +25,8 @@ int main(int argc, char **argv) {
 	int configError = getConfig(configId, &addr); // get the configId correspond to the ID
 
 	if (configError == -1) {
-		fprintf(stderr, "This configuration doesn't exist, your config ID is out of range.\n");
-		return -1;
+		fprintf(stderr, "This configuration doesn't exist, your configuration ID is out of range.\n");
+		exit(EXIT_FAILURE);
 	}
 
 	int receiver, sender;
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
 			if (receive_error == -1) {
 				fprintf(stderr, "Error on receive\n");
 				close_sockets();
-				return -1;
+				exit(EXIT_FAILURE);
 			}
 		}
 		start = 1;
