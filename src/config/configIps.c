@@ -72,3 +72,10 @@ int getBROADCAST(){
     }
     return broadcast-1;
 }
+int getSizeMsg(){
+    int size = 1;
+    for (int i = 0; i<SIZE_SIZE; i++){
+        size = size*10;
+    }
+    return size-1;
+}

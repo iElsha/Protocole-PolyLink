@@ -8,21 +8,21 @@ const int NUMBER_OF_PC;
  * data struct which handle IP config
  */
 struct address {
-	char *ADRESSE_EMETTEUR;
-	char *ADRESSE_RECEPTEUR;
-	int PORT_RECEPTION;
-	int PORT_EMISSION;
-	int ID_COMPUTER;
+    char *ADRESSE_EMETTEUR;
+    char *ADRESSE_RECEPTEUR;
+    int PORT_RECEPTION;
+    int PORT_EMISSION;
+    int ID_COMPUTER;
 };
 
 struct CONFIG_PACKET {
-	int SIZE_NBMESSAGE;
-	int SIZE_DEST;
-	int SIZE_SIZE;
-	int SIZE_FLAG;
-	int SIZE_SOURCE;
-	int SIZE_IDBROADCAST;
-	int SIZE_CHECKSUM;
+    int SIZE_NBMESSAGE;
+    int SIZE_DEST;
+    int SIZE_SIZE;
+    int SIZE_FLAG;
+    int SIZE_SOURCE;
+    int SIZE_IDBROADCAST;
+    int SIZE_CHECKSUM;
 };
 
 /**
@@ -36,6 +36,8 @@ struct CONFIG_PACKET *getConfigPacket();
 struct list *getIDS_COMPUTER();
 
 int getBROADCAST();
+
+int getSizeMsg();
 
 #endif //PROTOCOLE_POLYLINK_CONFIGIPS_H
 #pragma clang diagnostic pop
