@@ -154,7 +154,7 @@ struct HeaderMessage *createHeaderMessage(int source, int checksum, int idBroadc
 }
 
 struct HeaderMessage *createHeaderMessage_new(int source, int idBroadcast, struct Message *message) {
-	int checksum = calcCheckSum(message->data, getConfigPacket()->SIZE_CHECKSUM);
+	int checksum = calcCheckSum(message->data, getCheckSum());
 	return createHeaderMessage(source, checksum, idBroadcast, message);
 }
 

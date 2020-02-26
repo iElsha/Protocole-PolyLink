@@ -39,5 +39,6 @@ int getBROADCAST();
 
 int getSizeMsg();
 
+int getCheckSum();
 #endif //PROTOCOLE_POLYLINK_CONFIGIPS_H
 #pragma clang diagnostic pop

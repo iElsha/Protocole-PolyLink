@@ -79,3 +79,11 @@ int getSizeMsg(){
     }
     return size-1;
 }
+
+int getCheckSum(){
+    int size = 1;
+    for (int i = 0; i<SIZE_CHECKSUM; i++){
+        size = size*10;
+    }
+    return size;
+}
