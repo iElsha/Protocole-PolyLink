@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include "../util/colors.h"
+#include "../util/polylink_socket.h"
 
 struct Flag *lastMessage;
 static int lastDesMessage;
@@ -50,6 +52,7 @@ char *PolyLink(char *stringPacket, int pc) {
 	action_user(error, packet);
 
 	printf("\n=========================\n");
+	printf(ANSI_COLOR_YELLOW "Waiting..." ANSI_COLOR_RESET);
 	return stringifyContainer(packet);
 }
 
@@ -61,7 +64,7 @@ void packet_message_ack(struct Container *packet) {
 		if ((int) list_getElem(i, packet->dests) == ID_USER || (int) list_getElem(i, packet->dests) == BROADCAST) {
 			struct Flag *f = list_getElem(i, packet->flags);
 			if (f->flag == F_FLAG_ACK() || (f->flag == F_FLAG_MESSAGE() && f->headerMessage->source == ID_USER)) {
-				printf("\nYour message has been transmitted\n");
+				printf(ANSI_COLOR_GREEN "\nYour message has been transmitted\n" ANSI_COLOR_RESET);
 				deleteMessage(i, packet);
 				find = 1;
 			}
@@ -77,7 +80,7 @@ int packet_message_error(struct Container *packet) {
 		if ((int) list_getElem(i, packet->dests) == ID_USER) {
 			struct Flag *f = list_getElem(i, packet->flags);
 			if (f->flag == F_FLAG_ERR()) {
-				printf("\nYour message hasn't been transmitted\n");
+				printf(ANSI_COLOR_RED "\nYour message hasn't been transmitted\n" ANSI_COLOR_RESET);
 				deleteMessage(i, packet);
 				find = 1;
 			}
@@ -104,18 +107,19 @@ void packet_message_read_broadcast(struct Container *packet) {
 				i--;
 			} else {
 				// test si deja broadcast
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wint-conversion"
+                #pragma clang diagnostic push
+                #pragma clang diagnostic ignored "-Wint-conversion"
 				int sourcepos = list_find(f->headerMessage->source, listUser);
-#pragma clang diagnostic pop
+                #pragma clang diagnostic pop
 				int *lastid = list_getElem(sourcepos, listIdBroadcast);
 				if (*lastid != f->headerMessage->idBroadcast) {
 					*lastid = f->headerMessage->idBroadcast;
 					if (!find) {
-						printf("\n--- Broadcast message ---\n\n");
+						printf(ANSI_COLOR_MAGENTA"\n--- Broadcast message ---\n" ANSI_COLOR_RESET);
 						find = 1;
 					}
-					printf("%d --> %s\n", f->headerMessage->source, f->headerMessage->message->data);
+					printf(ANSI_COLOR_MAGENTA "%d --> %s\n" ANSI_COLOR_RESET, f->headerMessage->source,
+					       f->headerMessage->message->data);
 				}
 			}
 		}
@@ -136,10 +140,11 @@ void packet_message_read_user(struct Container *packet) {
 				i--;
 			} else {
 				if (!find) {
-					printf("\n--- Your message ---\n\n");
+					printf(ANSI_COLOR_BLUE"\n--- Your message ---\n" ANSI_COLOR_RESET);
 					find = 1;
 				}
-				printf("%d --> %s\n", f->headerMessage->source, f->headerMessage->message->data);
+				printf(ANSI_COLOR_BLUE "%d --> %s\n" ANSI_COLOR_RESET, f->headerMessage->source,
+				       f->headerMessage->message->data);
 				createAck(packet, f->headerMessage->source);
 				deleteMessage(i, packet);
 				i--;
@@ -151,20 +156,20 @@ void packet_message_read_user(struct Container *packet) {
 
 void action_user(int error, struct Container *packet) {
 	char action[10];
-	printf("\n--- User Console ---\n");
+	printf("\n--- User Console ---");
 	if (error) {
-		printf("\nYour last message failed:\n\n");
-		printf("%d --> %s\n", ID_USER, lastMessage->headerMessage->message->data);
-		printf("Do you want to send it back? [y/n] : ");
+		fprintf(stderr, "\nYour last message failed:\n");
+		printf("> %d --> %s\n", ID_USER, lastMessage->headerMessage->message->data);
+		printf("Do you want to send it back? [y/N/q] : ");
 	} else {
-		printf("\nDo you want to send a message? [y/n] : ");
+		printf("\nDo you want to send a message? [y/N/q] : ");
 	}
 	do {
 		memset(action, '\0', sizeof(action));
 		fgets(action, sizeof(action), stdin);
 		strtok(action, "\n");
 
-		if (action[0] == 'y') { // write a message
+		if (action[0] == 'y' || action[0] == 'Y') { // write a message
 			if (error) {
 				addMessageB(packet, ID_USER, lastDesMessage, lastMessage->headerMessage->message->data,
 				            lastMessage->headerMessage->idBroadcast);
@@ -191,8 +196,8 @@ void action_user(int error, struct Container *packet) {
 				int dest = StringToInt(iddest);
 
 				if (BROADCAST == dest) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wint-conversion"
+                    #pragma clang diagnostic push
+                    #pragma clang diagnostic ignored "-Wint-conversion"
 					int *idBroadcast = list_getElem(list_find(ID_USER, listUser), listIdBroadcast);
 #pragma clang diagnostic pop
 					(*idBroadcast)++;
@@ -204,11 +209,15 @@ void action_user(int error, struct Container *packet) {
 				lastDesMessage = (int) list_getElem_footer(packet->dests);
 
 			}
-			printf("\nMessage sent !!!\n");
-		} else if (action[0] == 'h') {
+			printf(ANSI_COLOR_GREEN "\nMessage sent!!!\n" ANSI_COLOR_RESET);
+		} else if (action[0] == 'h' || action[0] == 'H') {
 			printf("Press y to write a message or resend the last message\n");
 			printf("Press n if you have nothing to say\n");
+			printf("Press q if you want to quit\n");
+		} else if (action[0] == 'q') {
+			printf("Closing Sockets ..\n");
+			close_sockets();
 		}
-	} while (action[0] != 'y' && action[0] != 'n');
+	} while (action[0] != 'y' && action[0] != 'n' && action[0] != '\n');
 
 }

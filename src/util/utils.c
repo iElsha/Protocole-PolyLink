@@ -28,9 +28,10 @@ int StringToInt(char *data) {
 	//printf("\n string : %s\n base   : %d\n endptr : %s\n\n", data, base, endptr);
 
 	// test return to number and errno values
-	if (data == endptr)
-		fprintf(stderr, " number : %lu  invalid  (no digits found, 0 returned)\n", number);
-	else if (errno == ERANGE && number == LONG_MIN)
+//	if (data == endptr)
+//		fprintf(stderr, " number : %lu  invalid  (no digits found, 0 returned)\n", number);
+//	else
+	if (errno == ERANGE && number == LONG_MIN)
 		fprintf(stderr, " number : %lu  invalid  (underflow occurred)\n", number);
 	else if (errno == ERANGE && number == LONG_MAX)
 		fprintf(stderr, " number : %lu  invalid  (overflow occurred)\n", number);
@@ -38,8 +39,8 @@ int StringToInt(char *data) {
 		fprintf(stderr, " number : %lu  invalid  (unspecified error occurred)\n", number);
 //	else if (errno == 0 && data && !*endptr)
 //		printf(" number : %lu    valid  (and represents all characters read)\n", number);
-	else if (errno == 0 && data && *endptr != 0)
-		printf(" number : %lu    valid  (but additional characters remain)\n", number);
+//	else if (errno == 0 && data && *endptr != 0)
+//		printf(" number : %lu    valid  (but additional characters remain)\n", number);
 
 	return (int) number;
 }
@@ -82,9 +83,16 @@ char *substring(const char *data, int start, int end) {
  * @return char* concat string
  */
 char *concat(char *s1, char *s2) {
-	char *string = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
-	strcpy(string, s1);
-	strcat(string, s2);
+	int l1 = strlen(s1);
+	int l2 = strlen(s2);
+	char *string = (char *) malloc(sizeof(char) * (l1 + l2 + 1));
+	for (int i = 0; i < l1; i++) {
+		string[i] = s1[i];
+	}
+	for (int i = l1; i < l1 + l2; i++) {
+		string[i] = s2[i - l1];
+	}
+	string[l1 + l2] = '\0';
 	return string;
 }
 

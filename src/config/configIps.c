@@ -3,12 +3,11 @@
 #include "configIps.h"
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
+
 const int NUMBER_OF_PC = 3;
 
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
 const char *ADRESSES_RECEPTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
-const int PORTS_RECEPTION[] = {8000, 8001,8002};
-const int PORTS_EMISSION[] = {8002, 8000,8001};
 const int IDS_COMPUTER[] = {1, 2, 3};
 
 /* Size in number of characters */
@@ -24,6 +23,7 @@ const int SIZE_FLAG = 1;
 const int SIZE_IDBROADCAST = 1;
 // Size of number of checksum : 10*n-1
 const int SIZE_CHECKSUM = 3;
+const int BASE_ADDRESS = 9001;
 
 int getConfig(int numberConfig, struct address *addr) {
 	numberConfig = numberConfig - 1;
@@ -32,16 +32,16 @@ int getConfig(int numberConfig, struct address *addr) {
 
 	addr->ADRESSE_EMETTEUR = ADRESSES_EMETTEUR[numberConfig];
 	addr->ADRESSE_RECEPTEUR = ADRESSES_RECEPTEUR[numberConfig];
-	addr->PORT_EMISSION = PORTS_EMISSION[numberConfig];
-	addr->PORT_RECEPTION = PORTS_RECEPTION[numberConfig];
+	addr->PORT_EMISSION = BASE_ADDRESS + ((numberConfig + 1) % NUMBER_OF_PC);
+	addr->PORT_RECEPTION = BASE_ADDRESS + numberConfig;
 	addr->ID_COMPUTER = IDS_COMPUTER[numberConfig];
-
-	printf("ID: %d \tReceiver: %s:%d \tSender: %s:%d\n",
+	printf("Network Configuration:\n");
+	printf("ID: %d \tReceiver: %s:%d \tSender: %s:%d\n\n",
 	       addr->ID_COMPUTER,
-	       addr->ADRESSE_EMETTEUR,
-	       addr->PORT_EMISSION,
 	       addr->ADRESSE_RECEPTEUR,
-	       addr->PORT_RECEPTION);
+	       addr->PORT_RECEPTION,
+	       addr->ADRESSE_EMETTEUR,
+	       addr->PORT_EMISSION);
 
 	return 1;
 }
@@ -58,12 +58,12 @@ struct CONFIG_PACKET* getConfigPacket() {
 	return configPacket;
 }
 
-struct list* getIDS_COMPUTER(){
-    struct list* l = list_create();
-    for (int i = 0; i < NUMBER_OF_PC; i++){
-        list_insert_footer(IDS_COMPUTER[i],l);
-    }
-    return l;
+struct list *getIDS_COMPUTER() {
+	struct list *l = list_create();
+	for (int i = 0; i < NUMBER_OF_PC; i++) {
+		list_insert_footer(IDS_COMPUTER[i], l);
+	}
+	return l;
 }
 
 int getBROADCAST(){

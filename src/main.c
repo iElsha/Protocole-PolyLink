@@ -8,6 +8,7 @@
 #include "util/receive.h"
 #include "util/send.h"
 #include "protocolesStructs/protocolesStructs.h"
+#include "util/colors.h"
 
 int main(int argc, char **argv) {
 
@@ -15,8 +16,8 @@ int main(int argc, char **argv) {
 	char buffer[2000];
 
 	if (argc < 2) {
-		fprintf(stderr, "You didn't provide enough args. Do not forget the configuration IP ID.\n");
-		return -1;
+		fprintf(stderr, "You didn't provide enough args. Do not forget to add the configuration IP ID.\n");
+		exit(EXIT_FAILURE);
 	}
 
 	int configId = (int) strtol(argv[1], &end, 10); // get the configId ID
@@ -24,32 +25,28 @@ int main(int argc, char **argv) {
 	int configError = getConfig(configId, &addr); // get the configId correspond to the ID
 
 	if (configError == -1) {
-		fprintf(stderr, "This configuration doesn't exist, your config ID is out of range.\n");
-		return -1;
+		fprintf(stderr, "This configuration doesn't exist, your configuration ID is out of range.\n");
+		exit(EXIT_FAILURE);
 	}
 
 	int receiver, sender;
-	if (addr.ID_COMPUTER == 1) {
-		receiver = create_socket_receiver(addr.PORT_RECEPTION);
-		getchar();
-		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+	if (addr.ID_COMPUTER != NUMBER_OF_PC) {
+		receiver = createSocketReceiver(addr.PORT_RECEPTION);
+		sender = createSocketSender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
 	} else {
-		sender = create_socket_sender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
-//		getchar();
-		receiver = create_socket_receiver(addr.PORT_RECEPTION);
+		sender = createSocketSender(addr.ADRESSE_EMETTEUR, addr.PORT_EMISSION);
+		receiver = createSocketReceiver(addr.PORT_RECEPTION);
 	}
 
 	int start = 0;
 	while (1) {
-
 		if (addr.ID_COMPUTER != 1 || start != 0) {
 
 			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
 			if (receive_error == -1) {
 				fprintf(stderr, "Error on receive\n");
-				close_socket(receiver);
-				close_socket(sender);
-				return -1;
+				close_sockets();
+				exit(EXIT_FAILURE);
 			}
 		}
 		start = 1;
