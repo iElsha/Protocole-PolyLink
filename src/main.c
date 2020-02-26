@@ -13,8 +13,7 @@
 int main(int argc, char **argv) {
 
 	char *end;
-	char buffer[2000];
-
+	char buffer[20000];
 	if (argc < 2) {
 		fprintf(stderr, "You didn't provide enough args. Do not forget to add the configuration IP ID.\n");
 		exit(EXIT_FAILURE);
@@ -41,7 +40,7 @@ int main(int argc, char **argv) {
 	int start = 0;
 	while (1) {
 		if (addr.ID_COMPUTER != 1 || start != 0) {
-
+            memset(buffer,'\0', sizeof(buffer));
 			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
 			if (receive_error == -1) {
 				fprintf(stderr, "Error on receive\n");

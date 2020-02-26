@@ -107,10 +107,7 @@ void packet_message_read_broadcast(struct Container *packet) {
 				i--;
 			} else {
 				// test si deja broadcast
-                #pragma clang diagnostic push
-                #pragma clang diagnostic ignored "-Wint-conversion"
 				int sourcepos = list_find(f->headerMessage->source, listUser);
-                #pragma clang diagnostic pop
 				int *lastid = list_getElem(sourcepos, listIdBroadcast);
 				if (*lastid != f->headerMessage->idBroadcast) {
 					*lastid = f->headerMessage->idBroadcast;
@@ -174,42 +171,50 @@ void action_user(int error, struct Container *packet) {
 				addMessageB(packet, ID_USER, lastDesMessage, lastMessage->headerMessage->message->data,
 				            lastMessage->headerMessage->idBroadcast);
 			} else {
+
 				printf("\nList of user:\n|");
 				for (int i = 0; i < list_lenght(listUser); i++) {
 					int j = (int) list_getElem(i, listUser);
 					if (j != ID_USER)
 						printf(" %d |", j);
 				}
-				printf("\nBroadcast : %d\nSelect a destination: ", BROADCAST);
+				printf("\nBroadcast : %d", BROADCAST);
 				char iddest[10];
-				memset(iddest, '\0', sizeof(iddest));
-				fgets(iddest, sizeof(iddest), stdin);
-				strtok(iddest, "\n");
+                int valide;
+                do {
+                    printf("\nSelect a destination: ");
+                    memset(iddest, '\0', sizeof(iddest));
+                    fgets(iddest, sizeof(iddest), stdin);
+                    strtok(iddest, "\n");
+                    if (!isNumber(iddest) || (StringToInt(iddest)!= BROADCAST && list_find(StringToInt(iddest),listUser) == -1) ) {
+                        printf(ANSI_COLOR_RED "\nError, invalid destination\n"ANSI_COLOR_RESET);
+                        valide = 1;
+                    } else {
+                        valide = 0;
+                    }
+                } while (valide);
+
 
 				printf("Message :\n%d --> ", ID_USER);
 
-				char msg[200];
+				char msg[2000];
 				memset(msg, '\0', sizeof(msg));
 				fgets(msg, sizeof(msg), stdin);
 				strtok(msg, "\n");
+                int dest = StringToInt(iddest);
 
-				int dest = StringToInt(iddest);
-
-				if (BROADCAST == dest) {
-                    #pragma clang diagnostic push
-                    #pragma clang diagnostic ignored "-Wint-conversion"
-					int *idBroadcast = list_getElem(list_find(ID_USER, listUser), listIdBroadcast);
-#pragma clang diagnostic pop
-					(*idBroadcast)++;
-					addMessageB(packet, ID_USER, BROADCAST, msg, *idBroadcast);
-				} else {
-					addMessage(packet, ID_USER, dest, msg);
-				}
-				lastMessage = list_getElem_footer(packet->flags);
-				lastDesMessage = (int) list_getElem_footer(packet->dests);
+                if (BROADCAST == dest) {
+                    int *idBroadcast = list_getElem(list_find(ID_USER, listUser), listIdBroadcast);
+                    (*idBroadcast)++;
+                    addMessageB(packet, ID_USER, BROADCAST, msg, *idBroadcast);
+                } else {
+                    addMessage(packet, ID_USER, dest, msg);
+                }
+                lastMessage = list_getElem_footer(packet->flags);
+                lastDesMessage = (int) list_getElem_footer(packet->dests);
+                printf(ANSI_COLOR_GREEN "\nMessage sent!!!\n" ANSI_COLOR_RESET);
 
 			}
-			printf(ANSI_COLOR_GREEN "\nMessage sent!!!\n" ANSI_COLOR_RESET);
 		} else if (action[0] == 'h' || action[0] == 'H') {
 			printf("Press y to write a message or resend the last message\n");
 			printf("Press n if you have nothing to say\n");

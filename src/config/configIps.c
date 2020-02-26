@@ -3,7 +3,6 @@
 #include "configIps.h"
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
-
 const int NUMBER_OF_PC = 3;
 
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
@@ -16,14 +15,14 @@ const int SIZE_NBMESSAGE = 2;
 // Address size: 10*n-3
 const int SIZE_ADDRESS = 2;
 // Message length size: 10*n-1
-const int SIZE_SIZE = 2;
+const int SIZE_SIZE = 4;
 // Size of number of flag: 10*n-1
 const int SIZE_FLAG = 1;
 // Size of number of id braodcast : 10*n-1
 const int SIZE_IDBROADCAST = 1;
 // Size of number of checksum : 10*n-1
 const int SIZE_CHECKSUM = 3;
-const int BASE_ADDRESS = 9001;
+const int BASE_ADDRESS = 8001;
 
 int getConfig(int numberConfig, struct address *addr) {
 	numberConfig = numberConfig - 1;
@@ -67,5 +66,9 @@ struct list *getIDS_COMPUTER() {
 }
 
 int getBROADCAST(){
-    return SIZE_ADDRESS*10-1;
+    int broadcast = 1;
+    for (int i = 0; i<SIZE_ADDRESS; i++){
+        broadcast = broadcast*10;
+    }
+    return broadcast-1;
 }

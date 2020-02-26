@@ -15,7 +15,7 @@ int F_FLAG_MESSAGE() { return FLAG_MESSAGE; }
 
 int F_FLAG_ACK() { return FLAG_ACK; }
 
-int F_FLAG_ERR() { return FLAG_MESSAGE; }
+int F_FLAG_ERR() { return FLAG_ERR; }
 
 struct Container *parseContainer(char *stringPacket) {
 

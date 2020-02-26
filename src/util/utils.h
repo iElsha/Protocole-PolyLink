@@ -21,4 +21,5 @@ char *concat(char *, char *);
 
 char *copy(char *string);
 
+int isNumber(char * string);
 #endif //PROTOCOLE_POLYLINK_UTILS_H

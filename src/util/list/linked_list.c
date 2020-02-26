@@ -68,8 +68,6 @@ int node_find(void *x, struct node *n) {
 	}
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
 void list_insert(void *x, struct list *L, int p) {
 	struct node *newNode = node_create(x);
@@ -82,7 +80,6 @@ void list_insert(void *x, struct list *L, int p) {
 	}
 }
 
-#pragma clang diagnostic pop
 
 void node_insert(struct node *x, struct node *n, int p) {
 	if (p == 1) {
@@ -154,9 +151,6 @@ void *list_delete_header(struct list *L) {
 	}
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
-
 void *list_delete_footer(struct list *L) {
 	if (list_is_empty(L)) {
 		return NULL;
@@ -166,8 +160,6 @@ void *list_delete_footer(struct list *L) {
 		return node_delete_end(L->first);
 	}
 }
-
-#pragma clang diagnostic pop
 
 void *node_delete_end(struct node *n) {
 	if (n->next->next == NULL) {
@@ -197,8 +189,6 @@ void *node_getElem(int p, struct node *n) {
 	}
 }
 
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 
 void *list_getElem_header(struct list *L) {
 	if (list_is_empty(L)) {
@@ -207,8 +197,6 @@ void *list_getElem_header(struct list *L) {
 		return L->first->element;
 	}
 }
-
-#pragma clang diagnostic pop
 
 void *list_getElem_footer(struct list *L) {
 	if (list_is_empty(L)) {

@@ -14,41 +14,14 @@ int calcCheckSum(char *data, int size) {
 }
 
 int StringToInt(char *data) {
-	char *endptr = NULL; // pointer to additional chars
-	int base = 10; // numeric base
-	long number = 0; // variable holding return
-
-	// reset errno to 0 before call
-	errno = 0;
-
-	// call to strtol assigning return to number and it automatically set errno
-	number = strtol(data, &endptr, base);
-
-	// output original string of characters considered
-	//printf("\n string : %s\n base   : %d\n endptr : %s\n\n", data, base, endptr);
-
-	// test return to number and errno values
-//	if (data == endptr)
-//		fprintf(stderr, " number : %lu  invalid  (no digits found, 0 returned)\n", number);
-//	else
-	if (errno == ERANGE && number == LONG_MIN)
-		fprintf(stderr, " number : %lu  invalid  (underflow occurred)\n", number);
-	else if (errno == ERANGE && number == LONG_MAX)
-		fprintf(stderr, " number : %lu  invalid  (overflow occurred)\n", number);
-	else if (errno != 0 && number == 0)
-		fprintf(stderr, " number : %lu  invalid  (unspecified error occurred)\n", number);
-//	else if (errno == 0 && data && !*endptr)
-//		printf(" number : %lu    valid  (and represents all characters read)\n", number);
-//	else if (errno == 0 && data && *endptr != 0)
-//		printf(" number : %lu    valid  (but additional characters remain)\n", number);
-
-	return (int) number;
+	return atoi(data);
 }
 
 char *IntToString(int data) {
 	int size = (data / 10) + 1;
 	char *string = (char *) malloc(sizeof(char) * (size + 1));
 	sprintf(string, "%d", data);
+    string[size] = '\0';
 	return string;
 }
 
@@ -57,6 +30,7 @@ char *padLeft(char *data, char c, int lenght) {
 	int size = (int) strlen(data);
 	if (size < lenght) {
 		string = (char *) malloc(sizeof(char) * (lenght + 1));
+        memset(string,'\0',lenght + 1);
 		for (int i = lenght - 1; i >= lenght - size; i--) {
 			string[i] = data[i - lenght + size];
 		}
@@ -73,6 +47,7 @@ char *substring(const char *data, int start, int end) {
 	for (int i = start; i < end; i++) {
 		string[i - start] = data[i];
 	}
+    string[lenght] = '\0';
 	return string;
 }
 
@@ -92,7 +67,7 @@ char *concat(char *s1, char *s2) {
 	for (int i = l1; i < l1 + l2; i++) {
 		string[i] = s2[i - l1];
 	}
-	string[l1 + l2] = '\0';
+    string[l1 + l2] = '\0';
 	return string;
 }
 
@@ -104,8 +79,17 @@ char *concat(char *s1, char *s2) {
 char *copy(char *s) {
 	int lenght = (int) strlen(s);
 	char *string = (char *) malloc(sizeof(char) * (lenght + 1));
+    string[lenght] = '\0';
 	for (int i = 0; i < lenght; i++) {
 		string[i] = s[i];
 	}
 	return string;
+}
+
+int isNumber(char * string){
+    for(int i = 0; i < strlen(string); i++){
+        if (string[i] > '9' || string[i] < '0')
+            return 0;
+    }
+    return 1;
 }
