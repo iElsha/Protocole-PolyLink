@@ -99,7 +99,7 @@ void packet_message_read_broadcast(struct Container *packet) {
         if ((int) list_getElem(i, packet->dests) == BROADCAST) {
             struct Flag *f = list_getElem(i, packet->flags);
             // check si il y a une error
-            if (calcCheckSum(f->headerMessage->message->data, configPacket->SIZE_CHECKSUM) !=
+            if (calcCheckSum(f->headerMessage->message->data, getCheckSum()) !=
                 f->headerMessage->checksum) {
                 // si oui creation de l'error et suppresion du broadcast
                 createError(packet, f->headerMessage->source);
@@ -130,7 +130,7 @@ void packet_message_read_user(struct Container *packet) {
     while (i < packet->nbMessage) {
         if ((int) list_getElem(i, packet->dests) == ID_USER) {
             struct Flag *f = list_getElem(i, packet->flags);
-            if (calcCheckSum(f->headerMessage->message->data, configPacket->SIZE_CHECKSUM) !=
+            if (calcCheckSum(f->headerMessage->message->data, getCheckSum()) !=
                 f->headerMessage->checksum) {
                 deleteMessage(i, packet);
                 createError(packet, f->headerMessage->source);
@@ -155,7 +155,7 @@ void action_user(int error, struct Container *packet) {
     char action[10];
     printf("\n--- User Console ---");
     if (error) {
-        fprintf(stderr, "\nYour last message failed:\n");
+        printf(ANSI_COLOR_RED "\nYour last message failed:\n" ANSI_COLOR_RESET);
         printf("> %d --> %s\n", ID_USER, lastMessage->headerMessage->message->data);
         printf("Do you want to send it back? [y/N/q] : ");
     } else {
@@ -197,10 +197,10 @@ void action_user(int error, struct Container *packet) {
                 } while (invalid);
                 char msg[2000];
                 do {
+                    printf("Message :\n%d --> ", ID_USER);
                     memset(msg, '\0', sizeof(msg));
                     fgets(msg, sizeof(msg), stdin);
                     strtok(msg, "\n");
-                    printf("Message :\n%d --> ", ID_USER);
                     if (strlen(msg) > getSizeMsg()) {
                         printf(ANSI_COLOR_RED "\nError, message too long\n\n"ANSI_COLOR_RESET);
                         invalid = 1;

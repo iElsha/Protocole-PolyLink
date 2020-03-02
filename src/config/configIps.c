@@ -22,7 +22,7 @@ const int SIZE_FLAG = 1;
 const int SIZE_IDBROADCAST = 1;
 // Size of number of checksum : 10*n-1
 const int SIZE_CHECKSUM = 3;
-const int BASE_ADDRESS = 8001;
+const int BASE_ADDRESS = 8060;
 
 int getConfig(int numberConfig, struct address *addr) {
 	numberConfig = numberConfig - 1;
