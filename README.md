@@ -19,19 +19,21 @@ Terminal 3: ./Protocole_PolyLink 3
 
 ## Features (In French)
 - Communication sur un réseau en anneau
-    - Protocole TCP
-- Fairplay
+    - Protocole **TCP**
+- **Fairplay**
     - Une seule personne ne peut parler à la fois
-    - Multiplexage, plusieurs messages peuvent circuler dans le même paquet
+    - Un message par tour
 - Gestion des :
-    - Acquittement lors de la réception du paquet
-    - Erreurs = renvois du ou des message(s) erronés.
-- Multiplexage :
+    - **Acquittement** lors de la réception du paquet
+    - **Erreurs** = renvois du ou des message(s) erronés.
+- **Multiplexage** :
+    - Plusieurs messages peuvent circuler dans le même paquet
     - Les headers ont une taille fixe    
-    - Le contenu des message a une taille variable
+    - Le contenu des **message a une taille dynamique** (=variable)
         - Utilisation d'offset pour se repérer dans le paquet
 - Gestion des adresses
-    - Attribution automatique des ports
+    - **Attribution automatique des ports**
+        - Il est possible de modifier le port dans le fichier de config ci-dessous.
     - attribution manuel des adresses IP dans le fichier `src/config/configIps.c`
     
 ## Config
