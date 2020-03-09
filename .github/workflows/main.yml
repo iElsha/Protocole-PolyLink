@@ -25,4 +25,9 @@ jobs:
     # Runs a set of commands using the runners shell
     - name: Build project
       run: cmake .&& cmake --build .
-      
+    
+    - name: Upload Protocole_PolyLink
+      uses: actions/upload-artifact@v1
+      with:
+        name: Protocole_PolyLink
+        path: Protocole_PolyLink
