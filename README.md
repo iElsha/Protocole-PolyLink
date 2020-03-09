@@ -1,4 +1,10 @@
 # Protocole PolyLink
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/iElsha/Protocole-PolyLink/CI)
+![GitHub](https://img.shields.io/github/license/iElsha/Protocole-PolyLink)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/iElsha/Protocole-PolyLink)
+[![GitHub issues](https://img.shields.io/github/issues/iElsha/Protocole-PolyLink)](https://github.com/iElsha/Protocole-PolyLink/issues)
+[![GitHub forks](https://img.shields.io/github/forks/iElsha/Protocole-PolyLink)](https://github.com/iElsha/Protocole-PolyLink/network)
+[![GitHub stars](https://img.shields.io/github/stars/iElsha/Protocole-PolyLink)](https://github.com/iElsha/Protocole-PolyLink/stargazers)
 
 ## Install
 1. Create the executable
@@ -37,7 +43,7 @@ Terminal 3: ./Protocole_PolyLink 3
     - attribution manuel des adresses IP dans le fichier `src/config/configIps.c`
     
 ## Config
-open the file in `src/config/configIps.c` then edit lines 
+Open the file in `src/config/configIps.c` then edit lines 
 ```C
 const int NUMBER_OF_PC = XXX; // for example 3
 
