@@ -1,7 +1,3 @@
-//
-// Created by maxence on 12/02/2020.
-//
-
 #ifndef PROTOCOLE_POLYLINK_COLORS_H
 #define PROTOCOLE_POLYLINK_COLORS_H
 

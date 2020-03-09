@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "configIps.h"
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
+
 const int NUMBER_OF_PC = 3;
 
 const char *ADRESSES_EMETTEUR[] = {"127.0.0.1", "127.0.0.1", "127.0.0.1"};
@@ -22,7 +24,7 @@ const int SIZE_FLAG = 1;
 const int SIZE_IDBROADCAST = 1;
 // Size of number of checksum : 10*n-1
 const int SIZE_CHECKSUM = 3;
-const int BASE_ADDRESS = 8060;
+const int BASE_ADDRESS = 8005;
 
 int getConfig(int numberConfig, struct address *addr) {
 	numberConfig = numberConfig - 1;
@@ -45,10 +47,10 @@ int getConfig(int numberConfig, struct address *addr) {
 	return 1;
 }
 
-struct CONFIG_PACKET* getConfigPacket() {
-	struct CONFIG_PACKET * configPacket = (struct CONFIG_PACKET*) malloc(sizeof(struct CONFIG_PACKET));
-	configPacket->SIZE_CHECKSUM= SIZE_CHECKSUM;
-	configPacket->SIZE_DEST= SIZE_ADDRESS;
+struct CONFIG_PACKET *getConfigPacket() {
+	struct CONFIG_PACKET *configPacket = (struct CONFIG_PACKET *) malloc(sizeof(struct CONFIG_PACKET));
+	configPacket->SIZE_CHECKSUM = SIZE_CHECKSUM;
+	configPacket->SIZE_DEST = SIZE_ADDRESS;
 	configPacket->SIZE_FLAG = SIZE_FLAG;
 	configPacket->SIZE_IDBROADCAST = SIZE_IDBROADCAST;
 	configPacket->SIZE_NBMESSAGE = SIZE_NBMESSAGE;
@@ -65,25 +67,26 @@ struct list *getIDS_COMPUTER() {
 	return l;
 }
 
-int getBROADCAST(){
-    int broadcast = 1;
-    for (int i = 0; i<SIZE_ADDRESS; i++){
-        broadcast = broadcast*10;
-    }
-    return broadcast-1;
-}
-int getSizeMsg(){
-    int size = 1;
-    for (int i = 0; i<SIZE_SIZE; i++){
-        size = size*10;
-    }
-    return size-1;
+int getBROADCAST() {
+	int broadcast = 1;
+	for (int i = 0; i < SIZE_ADDRESS; i++) {
+		broadcast = broadcast * 10;
+	}
+	return broadcast - 1;
 }
 
-int getCheckSum(){
-    int size = 1;
-    for (int i = 0; i<SIZE_CHECKSUM; i++){
-        size = size*10;
-    }
-    return size;
+int getSizeMsg() {
+	int size = 1;
+	for (int i = 0; i < SIZE_SIZE; i++) {
+		size = size * 10;
+	}
+	return size - 1;
+}
+
+int getCheckSum() {
+	int size = 1;
+	for (int i = 0; i < SIZE_CHECKSUM; i++) {
+		size = size * 10;
+	}
+	return size;
 }

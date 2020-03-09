@@ -3,10 +3,10 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include "colors.h"
 #include <errno.h>
 #include <stdlib.h>
-#include <stdlib.h>
+
+#include "colors.h"
 
 int receiver, sender;
 
@@ -32,7 +32,7 @@ int createSocketReceiver(int TDP_port_S) {
 	bind(sock, (struct sockaddr *) &sa_C, sizeof(struct sockaddr));
 
 	if (errno != 0) throwErrorMessage("/!\\ ERROR /!\\: createSocketReceiver - Bind");
-	printf(ANSI_COLOR_GREEN "Reicever bind successfully created...\n" ANSI_COLOR_RESET);
+	printf(ANSI_COLOR_GREEN "Receiver bind successfully created...\n" ANSI_COLOR_RESET);
 
 	errno = 0; //reset errno
 	listen(sock, 2);
@@ -79,7 +79,7 @@ int createSocketSender(char *IP_addr_S, int TDP_port_S) {
 }
 
 int close_sockets() {
-    close(receiver);
-    close(sender);
+	close(receiver);
+	close(sender);
 	exit(EXIT_SUCCESS);
 }

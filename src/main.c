@@ -8,7 +8,6 @@
 #include "util/receive.h"
 #include "util/send.h"
 #include "protocolesStructs/protocolesStructs.h"
-#include "util/colors.h"
 
 int main(int argc, char **argv) {
 
@@ -40,7 +39,7 @@ int main(int argc, char **argv) {
 	int start = 0;
 	while (1) {
 		if (addr.ID_COMPUTER != 1 || start != 0) {
-            memset(buffer,'\0', sizeof(buffer));
+			memset(buffer, '\0', sizeof(buffer));
 			int receive_error = receive_data(receiver, buffer, sizeof(buffer));
 			if (receive_error == -1) {
 				fprintf(stderr, "Error on receive\n");
@@ -50,7 +49,7 @@ int main(int argc, char **argv) {
 		}
 		start = 1;
 		char *data = PolyLink(buffer, addr.ID_COMPUTER);
-		send_data(sender, data, strlen(data));
+		send_data(sender, data, (size_t) strlen(data));
 	}
 }
 

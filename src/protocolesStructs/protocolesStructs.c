@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+
 #include "../util/utils.h"
 #include "../util/list/linked_list.h"
 #include "../config/configIps.h"
@@ -94,12 +95,12 @@ struct Container *createContainer() {
 	return container;
 }
 
-/* Ajout d'un message dans le container*/
+/* Ajout d'un message dans le container */
 void addMessage(struct Container *packet, int source, int dest, char *msg) {
 	addMessageB(packet, source, dest, msg, 0);
 }
 
-/* Ajout d'un message dans le container*/
+/* Ajout d'un message dans le container */
 void addMessageB(struct Container *packet, int source, int dest, char *msg, int idBroadcast) {
 	struct Message *message = createMessage(msg);
 	struct HeaderMessage *headerMessage = createHeaderMessage_new(source, idBroadcast, message);
@@ -118,7 +119,7 @@ void deleteMessage(int pos, struct Container *packet) {
 	packet->nbMessage--;
 }
 
-/* Creation et Ajout d'un acquittement dans le container*/
+/* Creation et Ajout d'un acquittement dans le container */
 void createAck(struct Container *packet, int dest) {
 	struct Flag *flag = createFlag1(FLAG_ACK);
 	int size = 0;
@@ -128,7 +129,7 @@ void createAck(struct Container *packet, int dest) {
 	list_insert_footer(flag, packet->flags);
 }
 
-/* Creation et Ajout d'une error dans le container*/
+/* Creation et Ajout d'une error dans le container */
 void createError(struct Container *packet, int dest) {
 	struct Flag *flag = createFlag1(FLAG_ERR);
 	int size = 0;

@@ -1,9 +1,7 @@
+#include "../protocolesStructs/protocolesStructs.h"
+
 #ifndef PROTOCOLE_POLYLINK_PROTOCOLE_H
 #define PROTOCOLE_POLYLINK_PROTOCOLE_H
-
-#endif //PROTOCOLE_POLYLINK_PROTOCOLE_H
-
-#include "../protocolesStructs/protocolesStructs.h"
 
 char *PolyLink(char *, int);
 
@@ -16,3 +14,5 @@ void packet_message_read_broadcast(struct Container *);
 void packet_message_read_user(struct Container *);
 
 void action_user(int, struct Container *);
+
+#endif //PROTOCOLE_POLYLINK_PROTOCOLE_H

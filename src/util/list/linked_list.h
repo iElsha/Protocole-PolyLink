@@ -1,7 +1,7 @@
+#include <stdbool.h>
+
 #ifndef PROTOCOLE_POLYLINK_LINKED_LIST_H
 #define PROTOCOLE_POLYLINK_LINKED_LIST_H
-
-#include <stdbool.h>
 
 struct node {
 	void *element;
