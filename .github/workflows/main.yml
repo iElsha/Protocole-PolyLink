@@ -31,4 +31,4 @@ jobs:
       run: |
         cmake .
         cmake --build .
-        ./Protocole_PolyLink 1 && ./Protocole_PolyLink 2 && ./Protocole_PolyLink 3
+        ./Protocole_PolyLink 1
